@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#2d5a27" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Garden Horizons 2" />
+    <link rel="manifest" href="/manifest.json" />
+    <title>Garden Horizons 2</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+
+    <!-- ========================
+         SPLASH SCREEN
+         ======================== -->
+    <div id="splash-screen" class="splash-screen">
+      <div class="splash-inner">
+        <div class="splash-logo">🌿</div>
+        <div class="splash-studio">David Lite Studios</div>
+        <div class="splash-title">Garden Horizons 2</div>
+        <div class="splash-tagline">Сезон посева</div>
+        <div class="splash-loader">
+          <div class="splash-loader-bar"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================
+         GAME APP
+         ======================== -->
+    <div id="app">
+
+      <!-- Оверлей событий -->
+      <div id="event-overlay" class="event-overlay hidden"></div>
+
+      <!-- Верхняя панель -->
+      <div id="top-bar" class="top-bar">
+        <div class="top-bar-left">
+          <span class="coin-icon">🪙</span>
+          <span id="money-display">0</span>
+          <span class="premium-icon">💎</span>
+          <span id="premium-display">0</span>
+        </div>
+        <div class="top-bar-center">
+          <span id="time-display">00:00 МСК</span>
+        </div>
+        <div class="top-bar-right">
+          <span id="event-badge" class="event-badge hidden"></span>
+        </div>
+      </div>
+
+      <!-- Мир сада -->
+      <div id="garden-world" class="garden-world">
+
+        <!-- Небо -->
+        <div id="sky" class="sky">
+          <div class="cloud cloud-1">☁️</div>
+          <div class="cloud cloud-2">☁️</div>
+          <div class="cloud cloud-3">⛅</div>
+        </div>
+
+        <!-- Фермер -->
+        <div id="farmer" class="farmer" title="Ваш фермер">
+          <div class="farmer-body">
+            <div class="farmer-hat">🎩</div>
+            <div class="farmer-face">😊</div>
+            <div class="farmer-torso">👕</div>
+          </div>
+        </div>
+
+        <!-- Грядки 2×2 -->
+        <div id="garden-grid" class="garden-grid">
+          <div class="plot" data-plot="0">
+            <div class="plot-soil"></div>
+            <div class="plot-plant"></div>
+            <div class="plot-label"></div>
+          </div>
+          <div class="plot" data-plot="1">
+            <div class="plot-soil"></div>
+            <div class="plot-plant"></div>
+            <div class="plot-label"></div>
+          </div>
+          <div class="plot" data-plot="2">
+            <div class="plot-soil"></div>
+            <div class="plot-plant"></div>
+            <div class="plot-label"></div>
+          </div>
+          <div class="plot" data-plot="3">
+            <div class="plot-soil"></div>
+            <div class="plot-plant"></div>
+            <div class="plot-label"></div>
+          </div>
+        </div>
+
+        <!-- Земля -->
+        <div class="ground"></div>
+      </div>
+
+      <!-- Уведомления -->
+      <div id="notification-area" class="notification-area"></div>
+
+      <!-- Нижние вкладки -->
+      <div id="bottom-tabs" class="bottom-tabs">
+        <button class="tab-btn active" data-tab="inventory">🎒 Инвентарь</button>
+        <button class="tab-btn" data-tab="shop">🏪 Магазин</button>
+        <button class="tab-btn" data-tab="premium">💎 Премиум</button>
+      </div>
+
+      <!-- Нижняя панель -->
+      <div id="bottom-panel" class="bottom-panel">
+
+        <!-- Вкладка: Инвентарь -->
+        <div id="tab-inventory" class="tab-content active">
+          <div class="panel-header">
+            <h3>🎒 Инвентарь</h3>
+            <div class="inv-actions">
+              <button id="sell-all-btn" class="btn btn-gold">Продать всё</button>
+              <button id="select-sell-btn" class="btn btn-outline">Выбрать</button>
+            </div>
+          </div>
+          <div id="select-mode-bar" class="select-mode-bar hidden">
+            <span id="select-count">0 выбрано</span>
+            <button id="sell-selected-btn" class="btn btn-gold btn-sm">Продать</button>
+            <button id="cancel-select-btn" class="btn btn-outline btn-sm">Отмена</button>
+          </div>
+          <div id="inventory-list" class="inventory-list">
+            <div class="empty-msg">Инвентарь пуст. Купите семена в магазине!</div>
+          </div>
+        </div>
+
+        <!-- Вкладка: Магазин -->
+        <div id="tab-shop" class="tab-content">
+          <div class="panel-header">
+            <h3>🏪 Магазин</h3>
+            <div class="shop-timer">
+              <span>Обновление: </span>
+              <span id="shop-timer-display" class="timer-val">5:00</span>
+            </div>
+          </div>
+          <div id="shop-list" class="shop-list"></div>
+        </div>
+
+        <!-- Вкладка: Премиум -->
+        <div id="tab-premium" class="tab-content">
+          <div class="panel-header">
+            <h3>💎 Премиум магазин</h3>
+          </div>
+          <div class="premium-section">
+            <div class="premium-card starter-pack">
+              <div class="pack-title">🌟 Стартовый пак</div>
+              <div class="pack-desc">150 Редких семян в ассортименте</div>
+              <div class="pack-price">$4.99</div>
+              <button class="btn btn-premium" id="buy-starter-btn">Купить</button>
+            </div>
+          </div>
+          <div class="premium-section">
+            <h4 class="gacha-title">🎰 Гача Рулетка</h4>
+            <div class="gacha-cards">
+              <div class="gacha-card common-pack">
+                <div class="pack-icon">🥉</div>
+                <div class="pack-name">Обычный пак</div>
+                <div class="pack-odds">О:80% Р:18% Э:2% Л:0.01%</div>
+                <div class="pack-price-coin">100 🪙</div>
+                <button class="btn btn-gacha-coin" data-pack="common">Крутить!</button>
+              </div>
+              <div class="gacha-card premium-pack">
+                <div class="pack-icon">💎</div>
+                <div class="pack-name">Премиум пак</div>
+                <div class="pack-odds">О:10% Р:50% Э:30% Л:10%</div>
+                <div class="pack-price-rub">₽299</div>
+                <button class="btn btn-gacha-rub" data-pack="premium">Крутить!</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Модалка гачи -->
+          <div id="gacha-modal" class="gacha-modal hidden">
+            <div class="gacha-overlay"></div>
+            <div class="gacha-content">
+              <h3>🎰 Крутим...</h3>
+              <div id="roulette-reel" class="roulette-reel">
+                <div class="reel-track" id="reel-track"></div>
+              </div>
+              <div id="gacha-result" class="gacha-result hidden">
+                <div class="result-icon" id="result-icon"></div>
+                <div class="result-name" id="result-name"></div>
+                <div class="result-rarity" id="result-rarity"></div>
+                <button class="btn btn-gold" id="gacha-close-btn">Забрать!</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,1023 @@
+/* =============================================
+   GARDEN HORIZONS 2 — Главные стили (RU)
+   Портретный режим · PWA · Mobile-first
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;600;700;800&family=Cinzel+Decorative:wght@700;900&display=swap');
+
+:root {
+  --primary:        #2d5a27;
+  --primary-light:  #4a8a3f;
+  --primary-dark:   #1a3a1a;
+  --gold:           #f4c430;
+  --gold-dark:      #c9a227;
+  --premium:        #9b59b6;
+  --premium-light:  #c39bd3;
+  --sky-day:        linear-gradient(180deg, #87CEEB 0%, #b8e4f9 60%, #d4f5a0 100%);
+  --sky-dawn:       linear-gradient(180deg, #FF8C00 0%, #FFD700 40%, #FF6347 70%, #d4f5a0 100%);
+  --ground:         #5a3e1b;
+  --soil:           #3d2b0e;
+  --soil-wet:       #2a1d08;
+  --text-dark:      #1a1a1a;
+  --text-light:     #f5f5f5;
+  --panel-bg:       rgba(20, 40, 15, 0.97);
+  --panel-border:   #4a8a3f;
+  --common-color:   #888;
+  --rare-color:     #4a90e2;
+  --epic-color:     #9b59b6;
+  --legendary-color:#f39c12;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--primary-dark);
+  font-family: 'Nunito', sans-serif;
+}
+
+/* =========================================
+   SPLASH SCREEN
+   ========================================= */
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at 50% 40%, #0d2a10 0%, #050f05 100%);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.splash-screen.fade-out {
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+.splash-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  text-align: center;
+  animation: splashEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes splashEnter {
+  from { opacity: 0; transform: translateY(30px) scale(0.9); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.splash-logo {
+  font-size: 4.5rem;
+  animation: splashFloat 3s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 20px rgba(100,255,100,0.6));
+}
+
+@keyframes splashFloat {
+  from { transform: translateY(0) rotate(-5deg); }
+  to   { transform: translateY(-10px) rotate(5deg); }
+}
+
+.splash-studio {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(244,196,48,0.6);
+  animation: splashGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes splashGlow {
+  from { text-shadow: 0 0 10px rgba(244,196,48,0.4); }
+  to   { text-shadow: 0 0 30px rgba(244,196,48,0.9), 0 0 60px rgba(244,196,48,0.3); }
+}
+
+.splash-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.85rem;
+  color: #d4f5a0;
+  margin-top: 4px;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(100,255,100,0.4);
+}
+
+.splash-tagline {
+  font-size: 0.75rem;
+  color: #6a9a60;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: -4px;
+}
+
+.splash-loader {
+  width: 160px;
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+.splash-loader-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--gold), #4db86a);
+  border-radius: 2px;
+  animation: loaderFill 2.2s ease-out forwards;
+}
+
+@keyframes loaderFill {
+  0%   { width: 0; }
+  60%  { width: 70%; }
+  90%  { width: 92%; }
+  100% { width: 100%; }
+}
+
+/* =========================================
+   APP LAYOUT
+   ========================================= */
+#app {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--primary-dark);
+}
+
+/* ---- Портретный режим ---- */
+@media (orientation: landscape) {
+  #app::before {
+    content: '📱 Пожалуйста, переверните устройство в портретный режим';
+    position: fixed;
+    inset: 0;
+    background: #1a3a1a;
+    color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    z-index: 9999;
+    text-align: center;
+    padding: 2rem;
+  }
+}
+
+/* ---- Оверлей событий ---- */
+.event-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  transition: background 2s ease;
+}
+
+.event-overlay.solar-dawn {
+  background: radial-gradient(ellipse at 50% 0%,
+    rgba(255,140,0,0.35) 0%,
+    rgba(255,215,0,0.15) 50%,
+    transparent 80%);
+  animation: solarPulse 4s ease-in-out infinite alternate;
+}
+
+.event-overlay.morning-dew {
+  background: radial-gradient(ellipse at 50% 100%,
+    rgba(100,200,255,0.2) 0%,
+    transparent 70%);
+}
+
+@keyframes solarPulse {
+  from { opacity: 0.7; }
+  to   { opacity: 1;   }
+}
+
+.hidden { display: none !important; }
+
+/* =========================================
+   TOP BAR
+   ========================================= */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(10, 25, 8, 0.95);
+  border-bottom: 2px solid var(--panel-border);
+  padding: 6px 12px;
+  height: 48px;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.top-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.top-bar-left .premium-icon { margin-left: 10px; }
+#premium-display { color: var(--premium-light); }
+
+.top-bar-center {
+  font-size: 0.75rem;
+  color: #aad;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.event-badge {
+  background: linear-gradient(135deg, #FF8C00, #FFD700);
+  color: #1a1a1a;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  animation: badgePulse 1.5s ease-in-out infinite alternate;
+  white-space: nowrap;
+}
+
+@keyframes badgePulse {
+  from { transform: scale(1);    box-shadow: 0 0 5px  rgba(255,140,0,0.5); }
+  to   { transform: scale(1.05); box-shadow: 0 0 12px rgba(255,140,0,0.9); }
+}
+
+/* =========================================
+   GARDEN WORLD
+   ========================================= */
+.garden-world {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.sky {
+  position: absolute;
+  inset: 0 0 80px 0;
+  background: var(--sky-day);
+  transition: background 3s ease;
+  overflow: hidden;
+}
+
+.sky.solar-dawn { background: var(--sky-dawn); }
+
+.cloud {
+  position: absolute;
+  font-size: 2rem;
+  animation: cloudDrift linear infinite;
+  opacity: 0.85;
+}
+.cloud-1 { top: 10%; animation-duration: 25s; animation-delay: 0s;    left: -80px; }
+.cloud-2 { top: 20%; animation-duration: 35s; animation-delay: -10s;  left: -80px; font-size: 1.5rem; }
+.cloud-3 { top: 8%;  animation-duration: 40s; animation-delay: -20s;  left: -80px; }
+
+@keyframes cloudDrift {
+  from { transform: translateX(-100px); }
+  to   { transform: translateX(calc(100vw + 100px)); }
+}
+
+.ground {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 80px;
+  background: linear-gradient(180deg, #5a3e1b 0%, #3d2b0e 60%, #2a1d08 100%);
+  border-top: 3px solid #7a5a2a;
+}
+
+/* =========================================
+   FARMER — ИСПРАВЛЕННОЕ ПОЗИЦИОНИРОВАНИЕ
+   Абсолютно внутри #garden-world.
+   Позиция задаётся через left/bottom в JS
+   (относительно viewport), без накопления.
+   ========================================= */
+.farmer {
+  position: absolute;
+  /* Начальное положение: центр по горизонтали, над землёй */
+  left: 50%;
+  bottom: 96px;
+  transform: translateX(-50%);
+  width: 48px;
+  text-align: center;
+  /* Плавное движение */
+  transition:
+    left   0.55s cubic-bezier(0.34, 1.56, 0.64, 1),
+    bottom 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 6;
+  cursor: default;
+  pointer-events: none;
+  will-change: left, bottom;
+}
+
+.farmer-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  line-height: 1;
+}
+
+.farmer-hat   { font-size: 1.4rem; }
+.farmer-face  { font-size: 1.1rem; margin-top: -4px; }
+.farmer-torso { font-size: 1.2rem; margin-top: -4px; }
+
+.farmer.working .farmer-body {
+  animation: farmerWork 0.18s ease-in-out infinite alternate;
+}
+
+@keyframes farmerWork {
+  from { transform: translateY(0) rotate(-6deg); }
+  to   { transform: translateY(-5px) rotate(6deg); }
+}
+
+.farmer.walking .farmer-body {
+  animation: farmerWalk 0.28s ease-in-out infinite alternate;
+}
+
+@keyframes farmerWalk {
+  from { transform: translateY(0) scaleX(1); }
+  to   { transform: translateY(-4px) scaleX(1.05); }
+}
+
+/* =========================================
+   GARDEN GRID (2×2)
+   ========================================= */
+.garden-grid {
+  position: absolute;
+  bottom: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 10px;
+  z-index: 4;
+}
+
+.plot {
+  width: 110px;
+  height: 90px;
+  position: relative;
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: visible;
+  transition: transform 0.15s ease;
+}
+
+.plot:active { transform: scale(0.96); }
+
+.plot-soil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #3d2b0e 0%, #2a1d08 100%);
+  border-radius: 8px;
+  border: 2px solid #7a5a2a;
+  box-shadow: inset 0 4px 8px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.3);
+  transition: background 0.5s ease, border-color 0.3s;
+}
+
+.plot.has-plant .plot-soil { border-color: #5a8a3a; }
+
+.plot.ready .plot-soil {
+  border-color: var(--gold);
+  box-shadow: inset 0 4px 8px rgba(0,0,0,0.4), 0 0 12px rgba(244,196,48,0.5);
+  animation: plotGlow 1s ease-in-out infinite alternate;
+}
+
+@keyframes plotGlow {
+  from { box-shadow: inset 0 4px 8px rgba(0,0,0,0.4), 0 0  8px rgba(244,196,48,0.4); }
+  to   { box-shadow: inset 0 4px 8px rgba(0,0,0,0.4), 0 0 20px rgba(244,196,48,0.8); }
+}
+
+.plot.working-plot .plot-soil {
+  animation: plotWorking 0.15s ease-in-out infinite alternate;
+}
+
+@keyframes plotWorking {
+  from { transform: scale(1);    }
+  to   { transform: scale(1.02); }
+}
+
+.plot-plant {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 8px;
+  font-size: 2.2rem;
+  line-height: 1;
+  text-align: center;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  z-index: 2;
+}
+
+.plot.stage-0 .plot-plant { font-size: 0.8rem;  opacity: 0.7;  }
+.plot.stage-1 .plot-plant { font-size: 1.4rem;  opacity: 0.85; }
+.plot.stage-2 .plot-plant { font-size: 1.9rem;  opacity: 0.95; }
+.plot.stage-3 .plot-plant { font-size: 2.4rem;  opacity: 1;    }
+
+/* Мутации */
+.plot.mutation-solar .plot-plant {
+  animation: solarMutGlow 1.5s ease-in-out infinite alternate;
+}
+@keyframes solarMutGlow {
+  from { filter: drop-shadow(0 0  5px rgba(255,215,0,0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+  to   { filter: drop-shadow(0 0 15px rgba(255,215,0,1.0)) drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+}
+
+.plot.mutation-crystal .plot-plant {
+  animation: crystalGlow 1s ease-in-out infinite alternate;
+}
+@keyframes crystalGlow {
+  from { filter: drop-shadow(0 0  5px rgba(100,200,255,0.5)); }
+  to   { filter: drop-shadow(0 0 18px rgba(100,200,255,1.0)); }
+}
+
+.plot.mutation-giant .plot-plant {
+  font-size: 3rem !important;
+  filter: drop-shadow(0 0 8px rgba(150,255,100,0.9));
+}
+
+.plot.mutation-void .plot-plant {
+  animation: voidPulse 0.8s ease-in-out infinite alternate;
+}
+@keyframes voidPulse {
+  from { filter: drop-shadow(0 0  5px rgba(150,0,255,0.5)); opacity: 0.7; }
+  to   { filter: drop-shadow(0 0 18px rgba(150,0,255,1.0)); opacity: 1;   }
+}
+
+.plot-label {
+  position: absolute;
+  top: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.5rem;
+  font-weight: 700;
+  color: var(--gold);
+  white-space: nowrap;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.mutation-badge {
+  position: absolute;
+  top: -8px; right: -8px;
+  font-size: 0.9rem;
+  z-index: 5;
+  animation: floatBadge 2s ease-in-out infinite alternate;
+}
+@keyframes floatBadge {
+  from { transform: translateY(0)  rotate(-10deg); }
+  to   { transform: translateY(-4px) rotate(10deg); }
+}
+
+/* =========================================
+   УВЕДОМЛЕНИЯ
+   ========================================= */
+.notification-area {
+  position: fixed;
+  top: 54px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 100;
+  pointer-events: none;
+  width: 90%;
+  max-width: 360px;
+}
+
+.notification {
+  background: rgba(10, 30, 8, 0.92);
+  border: 1px solid var(--panel-border);
+  border-left: 4px solid var(--gold);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #e0e0e0;
+  animation: notifSlide 0.3s ease-out;
+  backdrop-filter: blur(4px);
+}
+
+.notification.event-notif    { border-left-color: #FF8C00; color: #FFD700;   }
+.notification.mutation-notif { border-left-color: #9b59b6; color: #c39bd3;   }
+
+@keyframes notifSlide {
+  from { opacity: 0; transform: translateY(-10px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* =========================================
+   НИЖНИЕ ВКЛАДКИ
+   ========================================= */
+.bottom-tabs {
+  display: flex;
+  background: rgba(5, 15, 5, 0.98);
+  border-top: 2px solid var(--panel-border);
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 10px 4px;
+  background: none;
+  border: none;
+  border-top: 3px solid transparent;
+  color: #778;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+  color: var(--gold);
+  border-top-color: var(--gold);
+  background: rgba(244, 196, 48, 0.05);
+}
+
+/* =========================================
+   НИЖНЯЯ ПАНЕЛЬ
+   ========================================= */
+.bottom-panel {
+  background: var(--panel-bg);
+  border-top: 2px solid var(--panel-border);
+  flex-shrink: 0;
+  height: 260px;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.tab-content {
+  display: none;
+  height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tab-content.active { display: flex; }
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(74, 138, 63, 0.3);
+  flex-shrink: 0;
+}
+
+.panel-header h3 {
+  font-size: 0.85rem;
+  color: var(--gold);
+  font-weight: 800;
+}
+
+/* =========================================
+   КНОПКИ
+   ========================================= */
+.btn {
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn:active { transform: scale(0.95); }
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: #1a1a1a;
+  box-shadow: 0 2px 8px rgba(244,196,48,0.3);
+}
+.btn-gold:hover { box-shadow: 0 3px 12px rgba(244,196,48,0.5); }
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--panel-border);
+  color: #a0c898;
+}
+
+.btn-sm { padding: 4px 10px; font-size: 0.7rem; }
+
+.btn-premium {
+  background: linear-gradient(135deg, var(--premium), #7d3c98);
+  color: white;
+  box-shadow: 0 2px 8px rgba(155,89,182,0.4);
+  width: 100%;
+  padding: 10px;
+  font-size: 0.85rem;
+}
+
+.btn-gacha-coin {
+  background: linear-gradient(135deg, var(--gold), #e67e22);
+  color: #1a1a1a;
+  font-weight: 800;
+  width: 100%;
+  padding: 8px;
+}
+
+.btn-gacha-rub {
+  background: linear-gradient(135deg, var(--premium), #1a1aff);
+  color: white;
+  font-weight: 800;
+  width: 100%;
+  padding: 8px;
+}
+
+/* =========================================
+   ИНВЕНТАРЬ
+   ========================================= */
+.inv-actions { display: flex; gap: 6px; }
+
+.select-mode-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  background: rgba(155,89,182,0.1);
+  border-bottom: 1px solid rgba(155,89,182,0.3);
+  flex-shrink: 0;
+}
+
+.select-mode-bar span {
+  font-size: 0.72rem;
+  color: #c39bd3;
+  flex: 1;
+}
+
+.inventory-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-content: flex-start;
+  scrollbar-width: thin;
+  scrollbar-color: var(--panel-border) transparent;
+}
+
+.inv-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(74,138,63,0.25);
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  min-width: 130px;
+  flex: 1;
+}
+
+.inv-item:hover { background: rgba(255,255,255,0.07); }
+
+.inv-item.selected {
+  border-color: var(--gold);
+  background: rgba(244,196,48,0.1);
+}
+
+.inv-item-icon { font-size: 1.3rem; }
+
+.inv-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.inv-item-name {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #e0e0e0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.inv-item-detail {
+  font-size: 0.62rem;
+  color: #888;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.inv-item-detail .coin { color: var(--gold); }
+
+.inv-item-qty {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--gold);
+  background: rgba(244,196,48,0.15);
+  border-radius: 5px;
+  padding: 1px 5px;
+}
+
+.rarity-common   .inv-item-name { color: #ccc; }
+.rarity-rare     .inv-item-name { color: #4a90e2; }
+.rarity-epic     .inv-item-name { color: #9b59b6; }
+.rarity-legendary .inv-item-name { color: #f39c12; }
+
+.empty-msg {
+  width: 100%;
+  text-align: center;
+  color: #556;
+  font-size: 0.75rem;
+  padding: 20px;
+}
+
+/* =========================================
+   МАГАЗИН
+   ========================================= */
+.shop-timer { font-size: 0.7rem; color: #778; }
+.timer-val  { color: #4db86a; font-weight: 700; }
+
+.shop-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--panel-border) transparent;
+}
+
+.shop-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(74,138,63,0.2);
+  border-radius: 10px;
+  padding: 8px 12px;
+  transition: background 0.15s ease;
+}
+.shop-item:hover { background: rgba(255,255,255,0.07); }
+
+.shop-item-icon  { font-size: 1.5rem; }
+.shop-item-info  { flex: 1; }
+
+.shop-item-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #e0e0e0;
+}
+
+.shop-item-desc  { font-size: 0.62rem; color: #667; margin-top: 2px; }
+
+.shop-item-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.shop-item-price { font-size: 0.75rem; font-weight: 700; color: var(--gold); }
+.shop-item-stock { font-size: 0.6rem;  color: #556; }
+.btn-buy { padding: 5px 12px; font-size: 0.72rem; }
+
+/* =========================================
+   ПРЕМИУМ МАГАЗИН
+   ========================================= */
+.premium-section {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(74,138,63,0.15);
+}
+
+.starter-pack {
+  background: linear-gradient(135deg, rgba(155,89,182,0.15), rgba(26,26,255,0.1));
+  border: 1px solid rgba(155,89,182,0.4);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pack-title { font-size: 0.85rem; font-weight: 800; color: var(--gold); flex: 1; }
+.pack-desc  { font-size: 0.65rem; color: #999; width: 100%; margin-top: -6px; }
+.pack-price { font-size: 0.8rem;  color: var(--premium-light); font-weight: 700; }
+
+.gacha-title {
+  font-size: 0.8rem;
+  color: var(--gold);
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.gacha-cards { display: flex; gap: 10px; }
+
+.gacha-card {
+  flex: 1;
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px;
+  padding: 10px 8px;
+  text-align: center;
+  border: 1px solid rgba(74,138,63,0.25);
+}
+
+.common-pack  { border-color: rgba(136,136,136,0.4); }
+.premium-pack { border-color: rgba(155,89,182,0.5);  }
+
+.pack-icon       { font-size: 1.6rem; }
+.pack-name       { font-size: 0.65rem; font-weight: 700; color: #e0e0e0; margin: 4px 0 2px; }
+.pack-odds       { font-size: 0.5rem;  color: #667; margin-bottom: 4px; }
+.pack-price-coin { font-size: 0.68rem; font-weight: 700; color: var(--gold);          margin-bottom: 6px; }
+.pack-price-rub  { font-size: 0.68rem; font-weight: 700; color: var(--premium-light); margin-bottom: 6px; }
+
+#tab-premium { overflow-y: auto; }
+
+/* =========================================
+   ГАЧА МОДАЛ
+   ========================================= */
+.gacha-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gacha-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(4px);
+}
+
+.gacha-content {
+  position: relative;
+  background: linear-gradient(135deg, #0d2010, #1a1060);
+  border: 2px solid var(--premium);
+  border-radius: 16px;
+  padding: 24px 20px;
+  width: 90%;
+  max-width: 340px;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(155,89,182,0.5);
+}
+
+.gacha-content h3 {
+  color: var(--gold);
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+}
+
+.roulette-reel {
+  width: 100%;
+  height: 80px;
+  overflow: hidden;
+  border: 2px solid rgba(155,89,182,0.5);
+  border-radius: 10px;
+  background: rgba(0,0,0,0.4);
+  position: relative;
+}
+
+.roulette-reel::before,
+.roulette-reel::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 40%;
+  z-index: 2;
+  pointer-events: none;
+}
+.roulette-reel::before { left:  0; background: linear-gradient(to right, rgba(0,0,0,0.7), transparent); }
+.roulette-reel::after  { right: 0; background: linear-gradient(to left,  rgba(0,0,0,0.7), transparent); }
+
+.reel-track {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  will-change: transform;
+}
+
+.reel-item {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+
+.reel-item-label { font-size: 0.5rem; font-weight: 700; margin-top: 2px; }
+
+.reel-item.common    .reel-item-label { color: var(--common-color);    }
+.reel-item.rare      .reel-item-label { color: var(--rare-color);      }
+.reel-item.epic      .reel-item-label { color: var(--epic-color);      }
+.reel-item.legendary .reel-item-label { color: var(--legendary-color); }
+
+.gacha-result {
+  margin-top: 16px;
+  padding: 14px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  border: 1px solid rgba(244,196,48,0.3);
+}
+
+.result-icon   { font-size: 3rem; margin-bottom: 6px; }
+.result-name   { font-size: 0.9rem; font-weight: 800; color: #e0e0e0; margin-bottom: 4px; }
+.result-rarity { font-size: 0.75rem; font-weight: 700; margin-bottom: 12px; }
+
+.result-rarity.common    { color: var(--common-color);    }
+.result-rarity.rare      { color: var(--rare-color);      }
+.result-rarity.epic      { color: var(--epic-color);      }
+.result-rarity.legendary { color: var(--legendary-color); }
+
+/* =========================================
+   ПРОГРЕСС РОСТА
+   ========================================= */
+.grow-progress {
+  position: absolute;
+  bottom: 4px;
+  left: 8px; right: 8px;
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  z-index: 3;
+}
+
+.grow-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #4db86a, var(--gold));
+  border-radius: 2px;
+  transition: width 1s linear;
+}
+
+/* =========================================
+   ЧАСТИЦЫ СБОРА УРОЖАЯ
+   ========================================= */
+.harvest-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.particle {
+  position: absolute;
+  font-size: 1rem;
+  animation: particleFly 0.8s ease-out forwards;
+}
+
+@keyframes particleFly {
+  from { opacity: 1; transform: translate(0, 0) scale(1); }
+  to   { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.3); }
+}
+
+/* =========================================
+   АДАПТИВНОСТЬ
+   ========================================= */
+@media (max-height: 600px) {
+  .bottom-panel { height: 200px; }
+  .garden-grid  { bottom: 60px; }
+  .plot { width: 90px; height: 75px; }
+}
+
+@media (max-height: 700px) {
+  .bottom-panel { height: 230px; }
+}
+
+/* =========================================
+   СКРОЛЛБАР
+   ========================================= */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 2px; }
